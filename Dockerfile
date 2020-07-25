@@ -79,12 +79,10 @@ RUN ln -s /root/.composer/vendor/bin/drush /usr/bin/drush
 # 10. Install Drupal Coding Standards PHPCS
 RUN composer global require drupal/coder
 RUN ln -s /root/.composer/vendor/bin/phpcs /usr/bin/phpcs
+RUN ln -s /root/.composer/vendor/bin/phpcbf /usr/bin/phpcbf
 RUN composer global require drupal/coder:^8.3.1
 RUN composer global require dealerdirect/phpcodesniffer-composer-installer
 RUN phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
-
-#RUN phpcs --config-set installed_paths /root/.composer/vendor/drupal/coder/coder_sniffer/
-#RUN phpcs --config-set default_standard Drupal,DrupalPractice
 
 # 11. Config permissions
 RUN cd drupal/web && chown -R www-data:www-data sites modules themes
