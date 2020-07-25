@@ -10,10 +10,17 @@
     restart: always
     volumes:
       # modules
-      - $PWD/modules/:/var/www/html/modules/:rw
+      - $PWD/modules/:/var/www/html/drupal/web/modules/:rw
       # themes
-      - $PWD/themes/:/var/www/html/themes/:rw
+      - $PWD/themes/:/var/www/html/drupal/web/themes/:rw
       - ./logs:/var/log/logs
     environment:
-      APACHE_DOCUMENT_ROOT: "/var/www/html"
+      APACHE_DOCUMENT_ROOT: "/var/www/html/drupal/web"
+</code></pre>
+
+<h3>If you use this <a href="https://hub.docker.com/r/jwilder/nginx-proxy/">jwilder/nginx-proxy</a></h3>
+
+Add this line to environment by using your domain.
+<pre><code>
+      VIRTUAL_HOST: "domain.com"
 </code></pre>

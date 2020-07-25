@@ -69,8 +69,22 @@ RUN npm install
 # 8. Install Drupal
 ARG DRUPAL_VERSION
 
-RUN set -eux; \
-    curl -fSL "https://ftp.drupal.org/files/projects/drupal-${DRUPAL_VERSION}.tar.gz" -o drupal.tar.gz; \
-    tar -xz --strip-components=1 -f drupal.tar.gz; \
-    rm drupal.tar.gz; \
-    chown -R www-data:www-data sites modules themes
+RUN composer create-project drupal/recommended-project:${DRUPAL_VERSION} drupal
+
+# 9. Install and config drush
+RUN composer global require drush/drush
+RUN ln -s /root/.composer/vendor/bin/drush /usr/bin/drush
+
+
+# 10. Install Drupal Coding Standards PHPCS
+RUN composer global require drupal/coder
+RUN ln -s /root/.composer/vendor/bin/phpcs /usr/bin/phpcs
+RUN composer global require drupal/coder:^8.3.1
+RUN composer global require dealerdirect/phpcodesniffer-composer-installer
+RUN phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
+
+#RUN phpcs --config-set installed_paths /root/.composer/vendor/drupal/coder/coder_sniffer/
+#RUN phpcs --config-set default_standard Drupal,DrupalPractice
+
+# 11. Config permissions
+RUN cd drupal/web && chown -R www-data:www-data sites modules themes
