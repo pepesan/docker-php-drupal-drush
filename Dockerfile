@@ -72,12 +72,11 @@ ARG DRUPAL_VERSION
 RUN composer create-project drupal/recommended-project:${DRUPAL_VERSION} drupal
 
 # 9. Install and config drush
-RUN composer global require drush/drush
-RUN ln -s /root/.composer/vendor/bin/drush /usr/bin/drush
-
+RUN cd drupal && composer require drush/drush
+RUN echo 'alias drush="$PWD/drupal/vendor/bin/drush"' >> ~/.bashrc
 
 # 10. Install Drupal Coding Standards PHPCS
-RUN composer global require drupal/coder
+RUN composer require drupal/coder
 RUN ln -s /root/.composer/vendor/bin/phpcs /usr/bin/phpcs
 RUN ln -s /root/.composer/vendor/bin/phpcbf /usr/bin/phpcbf
 RUN composer global require drupal/coder:^8.3.1
