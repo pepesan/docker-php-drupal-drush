@@ -55,7 +55,3 @@ networks:
   internal:
     driver: bridge
 
-volumes:
-  drupal-data:
-  db-data:
-  certbot-etc:
