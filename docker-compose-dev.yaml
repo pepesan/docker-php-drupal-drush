@@ -53,7 +53,7 @@ services:
     volumes:
       - ./volumes/certbot-etc:/etc/letsencrypt
       - ./volumes/drupal-data:/var/www
-    command: "certonly --webroot --webroot-path=/var/www/html --email ${LETS_ENCRYPT_EMAIL} --agree-tos --no-eff-email -d ${NGINX_HOST}"
+    command: "certonly --webroot --webroot-path=/var/www/html --email ${LETS_ENCRYPT_EMAIL} --agree-tos --no-eff-email --staging -d ${NGINX_HOST}"
 
 networks:
   external:
