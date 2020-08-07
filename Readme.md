@@ -5,7 +5,7 @@
 
 <pre><code>
   app:
-    image: fabdelgado/drupal:latest
+    image: pepesan/drupal:latest
     container_name: app
     restart: always
     volumes:

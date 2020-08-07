@@ -1,6 +1,6 @@
 FROM php:7.3-apache
 
-label MAINTAINER="mail@fabdelgado.com"
+LABEL MAINTAINER="pepesan@gmail.com"
 
 RUN apt-get update
 
