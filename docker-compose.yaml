@@ -2,7 +2,7 @@ version: "3"
 
 services:
   mysql:
-    image: mysql:8.0
+    image: "mysql:${MYSQL_VERSION}"
     container_name: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
@@ -11,10 +11,14 @@ services:
       - ./volumes/db-data:/var/lib/mysql
     networks:
       - internal
-
+  #drush:
+  #  image: drush/drush:8
+  #  volumes:
+  #    - ./volumes/drupal-data:/app
   drupal:
-    image: drupal:8.7.8-fpm-alpine
+    image: "${PHP_IMAGE}:${PHP_VERSION}"
     container_name: drupal
+    env_file: .env
     depends_on:
       - mysql
     restart: unless-stopped
@@ -22,11 +26,12 @@ services:
       - internal
       - external
     volumes:
-      - ./volumes/drupal-data:/var/www/html
+      - ./volumes/drupal-data:/var/www
 
   webserver:
-    image: nginx:1.17.4-alpine
+    image: "nginx:${NGINX_VERSION}"
     container_name: webserver
+    env_file: .env
     depends_on:
       - drupal
     restart: unless-stopped
@@ -34,7 +39,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./volumes/drupal-data:/var/www/html
+      - ./volumes/drupal-data:/var/www
       - ./nginx-conf:/etc/nginx/conf.d
       - ./volumes/certbot-etc:/etc/letsencrypt
     networks:
@@ -47,8 +52,8 @@ services:
     container_name: certbot
     volumes:
       - ./volumes/certbot-etc:/etc/letsencrypt
-      - ./volumes/drupal-data:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email pepesan@gmail.com --agree-tos --no-eff-email --staging -d mordor.cursosdedesarrollo.com
+      - ./volumes/drupal-data:/var/www
+    command: "certonly --webroot --webroot-path=/var/www/html --email ${LETS_ENCRYPT_EMAIL} --agree-tos --no-eff-email --staging -d ${NGINX_HOST}"
 
 networks:
   external:

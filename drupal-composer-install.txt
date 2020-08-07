@@ -1,0 +1,3 @@
+# instalación de drupal con composer
+composer create-project drupal/recommended-project my_site_name_dir
+
