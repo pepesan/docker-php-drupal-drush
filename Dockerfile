@@ -1,4 +1,4 @@
-FROM devilbox/php-fpm-7.4
+FROM php:7.4-fpm-buster
 
 
 # Install packages
